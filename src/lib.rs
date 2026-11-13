@@ -2,7 +2,13 @@
 #![deny(missing_debug_implementations)]
 #![deny(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
-#![cfg_attr(feature = "allocator_api", feature(allocator_api))]
+// `Allocator`/`Vec`/`Box` custom-allocator support stabilized in Rust 1.100.
+// Keep enabling the nightly feature gate only on older compilers that still
+// need it (pre-1.100 nightlies).
+#![cfg_attr(
+    all(feature = "allocator_api", not(allocator_api_stable)),
+    feature(allocator_api)
+)]
 
 #[doc(hidden)]
 pub extern crate alloc as core_alloc;

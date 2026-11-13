@@ -2,29 +2,13 @@
 
 Released YYYY-MM-DD.
 
-### Added
-
-* TODO (or remove section if none)
-
 ### Changed
 
-* TODO (or remove section if none)
-
-### Deprecated
-
-* TODO (or remove section if none)
-
-### Removed
-
-* TODO (or remove section if none)
-
-### Fixed
-
-* TODO (or remove section if none)
-
-### Security
-
-* TODO (or remove section if none)
+* The `allocator_api` cargo feature now works on stable Rust **1.100+**, where
+  the standard library's `Allocator` API is stable. On older nightlies the
+  feature still enables `#![feature(allocator_api)]` as before. Downstream
+  crates no longer need a nightly feature gate when building with Rust 1.100
+  or newer.
 
 --------------------------------------------------------------------------------
 

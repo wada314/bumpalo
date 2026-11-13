@@ -30,6 +30,11 @@ jobs:
         include:
           - rust_channel: "nightly"
             feature_set: "--all-features"
+          # `allocator_api` is usable on stable as of Rust 1.100.
+          - rust_channel: "stable"
+            feature_set: "--features allocator_api,collections,boxed"
+          - rust_channel: "stable"
+            feature_set: "--features allocator-api2,collections,boxed"
           - rust_channel: "stable"
             feature_set: "--no-default-features"
         exclude:

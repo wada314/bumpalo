@@ -3,7 +3,7 @@
 //!
 //! [`blink-alloc`]: https://github.com/zakarumych/blink-alloc/blob/845b2db273371260eef2e9858386f6c6aa180e98/benches/bench.rs
 
-#![feature(allocator_api)]
+#![cfg_attr(not(allocator_api_stable), feature(allocator_api))]
 
 use criterion::*;
 use std::{

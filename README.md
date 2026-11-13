@@ -194,32 +194,18 @@ std only trait implementations for some collections:
 
 * `std::io::Write` for `Vec<'bump, u8>`
 
-### Nightly Rust `allocator_api` Support
+### `allocator_api` Support
 
-The unstable, nightly-only Rust `allocator_api` feature defines an [`Allocator`]
-trait and exposes custom allocators for `std` types. Bumpalo has a matching
-`allocator_api` cargo feature to enable implementing `Allocator` and using
-`Bump` with `std` collections. Note that, as `feature(allocator_api)` is
-unstable and only in nightly Rust, Bumpalo's matching `allocator_api` cargo
-feature should be considered unstable, and will not follow the semver
-conventions that the rest of the crate does.
-
-First, enable the `allocator_api` feature in your `Cargo.toml`:
+The Rust [`Allocator`] trait (stabilized in Rust 1.100) lets `Bump` be used as
+a custom allocator for `std` types such as `Vec` and `Box`. Enable Bumpalo's
+matching `allocator_api` cargo feature:
 
 ```toml
 [dependencies]
 bumpalo = { version = "3", features = ["allocator_api"] }
 ```
 
-Next, enable the `allocator_api` nightly Rust feature in your `src/lib.rs` or
-`src/main.rs`:
-
-```rust,ignore
-#![feature(allocator_api)]
-```
-
-Finally, use `std` collections with `Bump`, so that their internal heap
-allocations are made within the given bump arena:
+On Rust **1.100 and newer**, that is all you need — no nightly feature gate:
 
 ```rust,ignore
 use bumpalo::Bump;
@@ -234,19 +220,30 @@ v.push(1);
 v.push(2);
 ```
 
+On older nightlies (before Rust 1.100), you must still enable the compiler
+feature in your crate root:
+
+```rust,ignore
+#![feature(allocator_api)]
+```
+
+Extensions that were not part of the 1.100 stabilization (for example
+allocator-aware `String` / `HashMap`) remain under the nightly
+`allocator_ext` feature and are not covered by this cargo feature yet.
+
 [`Allocator`]: https://doc.rust-lang.org/std/alloc/trait.Allocator.html
 
-### Using the `Allocator` API on Stable Rust
+### Using the `Allocator` API via `allocator-api2`
 
-You can enable the `allocator-api2` Cargo feature and `bumpalo` will use [the
-`allocator-api2` crate](https://crates.io/crates/allocator-api2) to implement
-the unstable nightly`Allocator` API on stable Rust. This means that
-`bumpalo::Bump` will be usable with any collection that is generic over
+On Rust versions before 1.100 (or when you need the `allocator-api2` trait
+specifically), enable the `allocator-api2` Cargo feature and `bumpalo` will
+use [the `allocator-api2` crate](https://crates.io/crates/allocator-api2).
+Then `bumpalo::Bump` is usable with any collection that is generic over
 `allocator_api2::Allocator`.
 
 ### Minimum Supported Rust Version (MSRV)
 
-This crate is guaranteed to compile on stable Rust **1.71.1** and up. It might
+This crate is guaranteed to compile on stable Rust **1.91.0** and up. It might
 compile with older versions but that may change in any new patch release.
 
 We reserve the right to increment the MSRV on minor releases, however we will

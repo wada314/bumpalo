@@ -1,4 +1,7 @@
-#![cfg_attr(feature = "allocator_api", feature(allocator_api))]
+#![cfg_attr(
+    all(feature = "allocator_api", not(allocator_api_stable)),
+    feature(allocator_api)
+)]
 
 mod alloc_fill;
 mod alloc_try_with;
