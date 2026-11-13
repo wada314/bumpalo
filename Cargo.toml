@@ -62,9 +62,6 @@ rayon-core = { version = "=1.12.1" }
 default = []
 collections = []
 boxed = []
-# Enables `Bump: Allocator` using the standard library's `Allocator` trait.
-# On Rust 1.100+ this works on stable; on older nightlies it still requires
-# `#![feature(allocator_api)]` in downstream crates that use unstable pieces.
 allocator_api = []
 std = []
 serde = ["dep:serde"]
